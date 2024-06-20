@@ -13,23 +13,12 @@ services:
     working_dir: /var/www/
     volumes:
       - ./:/var/www
+      - ./database:/var/www/database  # Mount SQLite database directory
     networks:
       - laravel_network
-  db:
-    image: mysql:8.0
-    container_name: mysql-db
-    restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    volumes:
-      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
-    networks:
-      - laravel_network
+      DB_CONNECTION: sqlite
+      DB_DATABASE: /var/www/database/database.sqlite  # Path to SQLite database file
   nginx:
     image: nginx:alpine
     container_name: nginx-server
@@ -41,6 +30,7 @@ services:
       - ./docker-compose/nginx:/etc/nginx/conf.d/
     networks:
       - laravel_network
+
 networks:
   laravel_network:
     driver: bridge
