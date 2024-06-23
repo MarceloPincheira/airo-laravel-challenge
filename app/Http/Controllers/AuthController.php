@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
+use App\Http\Requests\RegisterUserRequest;
+
 class AuthController extends Controller
 {
     /**
@@ -85,14 +87,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(Request $request)
+    public function register(RegisterUserRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|unique:users|string|email|max:100',
-            'password' => 'required|string|min:6',
-        ]);
-
         if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
@@ -106,5 +102,23 @@ class AuthController extends Controller
             'message'=> 'User created',
             'user'=> $user
         ], 201);
+    }
+
+    public function getBearerToken()
+    {
+        $response = Http::post('http://nginx/api/auth/login', [
+            'email' => env('API_EMAIL_CREDENTIAL'),
+            'password' => env('API_PASSWORD_CREDENTIAL'),
+        ]);
+
+        if (!$response->successful())
+        {
+            logger('Authentication failed', ['response' => $response->body()]);
+            return null;
+        }
+
+        $data = $response->json();
+        return $data['access_token'] ?? null;
+
     }
 }
