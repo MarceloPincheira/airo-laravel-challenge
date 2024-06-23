@@ -19,7 +19,8 @@ class ApiQuotationController extends Controller
 
     public function saveQuotation(SaveQuotationRequest $request)
     {
-        $quotation = $this->quotationService->createQuotation($validatedData);
+        $data = $request->validated();
+        $quotation = $this->quotationService->createQuotation($data);
 
         return response()->json([
             'message' => 'Quotation created successfully',
@@ -33,5 +34,6 @@ class ApiQuotationController extends Controller
     public function getAllQuotations()
     {
         $quotations = $this->quotationService->getAllQuotations();
+        return $quotations;
     }
 }

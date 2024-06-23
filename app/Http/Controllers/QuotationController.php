@@ -22,6 +22,8 @@ class QuotationController extends Controller
 
     public function submitForm(SaveQuotationRequest $request)
     {
+        $data = $request->validated();
+
         $auth = new AuthController();
         $token = $auth->getBearerToken();
         if (!$token) {
@@ -34,10 +36,10 @@ class QuotationController extends Controller
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer '.$token,
         ])->post('http://nginx/api/quotation/save', [
-            'age' => $request->age,
-            'currency_id' => $request->currency_id,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
+            'age' => $data['age'],
+            'currency_id' => $data['currency_id'],
+            'start_date' => $data['start_date'],
+            'end_date' => $data['end_date'],
         ]);
 
         if (!$response->successful()) {
