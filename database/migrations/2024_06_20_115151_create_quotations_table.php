@@ -14,13 +14,12 @@ return new class extends Migration
         Schema::create('quotations', function (Blueprint $table) {
             $table->id();
             $table->string('age'); // To give support comma-separated ages
+            $table->string('currency_id');
             $table->float('total', 8, 2);
             $table->date('start_date');
             $table->date('end_date');
 
             $table->timestamps();
-            $table->foreignId('currency_id')->constrained('currencies');
-            $table->foreignId('customer_id')->constrained('customers');
         });
     }
 

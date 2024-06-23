@@ -12,19 +12,8 @@ class Quotation extends Model
     protected $fillable = [
         'age',
         'currency_id',
-        'customer_id',
         'start_date',
         'end_date',
         'total',
     ];
-
-    public function currency()
-    {
-        return $this->belongsTo(Currency::class);
-    }
-
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class);
-    }
 }
