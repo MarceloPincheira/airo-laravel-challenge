@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
 use App\Http\Controllers\AuthController;
+use App\Services\QuotationService;
 
 use App\Http\Requests\SaveQuotationRequest;
 
@@ -15,9 +16,12 @@ use App\Http\Requests\SaveQuotationRequest;
 class QuotationController extends Controller
 {
 
-    public function showForm()
+    public function index()
     {
-        return view('form');
+        $quotation = new QuotationService();
+        $quotations = $quotation->getAllQuotations();
+
+        return view('form', ['quotations' => $quotations]);
     }
 
     public function submitForm(SaveQuotationRequest $request)

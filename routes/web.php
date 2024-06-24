@@ -14,5 +14,5 @@ use App\Http\Controllers\QuotationController;
 |
 */
 
-Route::get('/quotation', [QuotationController::class, 'showForm']);
+Route::get('/quotation', [QuotationController::class, 'index']);
 Route::post('/quotation', [QuotationController::class, 'submitForm']);

@@ -8,7 +8,7 @@
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Quotation Form</h3>
@@ -41,6 +41,37 @@
                         </form>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-12">
+                <h1 class="mt-5 mb-4">Quotations List</h1>
+                @if ($quotations->isEmpty())
+                    <div class="alert alert-info" role="alert">
+                        There are no quotations.
+                    </div>
+                @else
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th scope="col">Quotation ID</th>
+                        <th scope="col">Currency ID</th>
+                        <th scope="col">Dates</th>
+                        <th scope="col">Ages</th>
+                        <th scope="col">Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($quotations as $quotation)
+                        <tr>
+                            <th scope="row">{{ $quotation->id }}</th>
+                            <td>{{ $quotation->currency_id }}</td>
+                            <td>{{ date('Y-m-d', strtotime($quotation->start_date)) }} to {{ date('Y-m-d', strtotime($quotation->end_date)) }}</td>
+                            <td>{{ $quotation->age }}</td>
+                            <td>{{ $quotation->total }}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+                @endif
             </div>
         </div>
     </div>
