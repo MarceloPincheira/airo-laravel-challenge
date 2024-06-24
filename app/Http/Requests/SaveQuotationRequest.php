@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\ValidAges;
 
 class SaveQuotationRequest extends FormRequest
 {
@@ -22,7 +23,7 @@ class SaveQuotationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'age' => 'required|string',
+            'age' => ['required', 'string', new ValidAges],
             'currency_id' => 'required|in:EUR,GBP,USD',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
