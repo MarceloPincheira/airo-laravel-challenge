@@ -6,11 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 use App\Models\User;
-
-use App\Http\Requests\RegisterUserRequest;
 
 class AuthController extends Controller
 {
@@ -88,8 +86,14 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(RegisterUserRequest $request)
+    public function register(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|unique:users|string|email|max:100',
+            'password' => 'required|string|min:6',
+        ]);
+
         if($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }

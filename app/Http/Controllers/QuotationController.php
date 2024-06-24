@@ -52,7 +52,11 @@ class QuotationController extends Controller
             ]);
         }
 
-        $quotation = $response->json();
-        return view('form', ['quotation' => $quotation]);
+        $quotation = new QuotationService();
+        $quotations = $quotation->getAllQuotations();
+
+        return view('form', ['quotations' => $quotations]);
+
+
     }
 }

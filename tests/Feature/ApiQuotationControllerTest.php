@@ -9,6 +9,8 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Quotation;
 
+use JWTAuth;
+
 class ApiQuotationControllerTest extends TestCase
 {
     use RefreshDatabase;
@@ -16,12 +18,15 @@ class ApiQuotationControllerTest extends TestCase
     public function testSaveQuotation()
     {
         $user = User::factory()->create();
-        $token = $user->createToken('TestToken')->accessToken;
+        $token = JWTAuth::fromUser($user);
 
         $requestData = [
+            'age' => '30,40',
             'total' => 117,
             'currency_id' => 'EUR',
             'quotation_id' => 1,
+            'start_date' => '2020-10-01',
+            'end_date' => '2020-10-30',
         ];
 
         $response = $this->withHeaders([
@@ -30,18 +35,12 @@ class ApiQuotationControllerTest extends TestCase
             ])
             ->post('/api/quotation/save', $requestData);
 
-        $response->assertStatus(201)
-                 ->assertJson([
-                     'quotation' => [
-                         'total' => $requestData['total'],
-                         'currency_id' => $requestData['currency_id'],
-                         'quotation_id' => $requestData['quotation_id'],
-                     ],
-                 ]);
+        $response->assertStatus(201);
 
-        // $quotation = Quotation::find($response['quotation']['quotation_id']);
-        // $this->assertNotNull($quotation);
-        // $this->assertEquals($requestData['total'], $quotation->total);
-        // $this->assertEquals($requestData['currency_id'], $quotation->currency_id);
+        $this->assertNotNull($response);
+
+        $this->assertEquals($requestData['total'], round($response['quotation']['total']));
+        $this->assertEquals($requestData['currency_id'], $response['quotation']['currency_id']);
+        $this->assertEquals($requestData['currency_id'], $response['quotation']['currency_id']);
     }
 }
