@@ -2,8 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ApiQuotationController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,10 +22,10 @@ Route::group([
     'prefix' => 'auth'
 ], function ($router) {
 
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('logout', [AuthController::class,'logout']);
-    Route::post('refresh', [AuthController::class,'refresh']);
-    Route::post('register', [AuthController::class,'register']);
+    Route::post('login', 'App\Http\Controllers\AuthController@login');
+    Route::post('logout', 'App\Http\Controllers\AuthController@logout');
+    Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
+    Route::post('register', 'App\Http\Controllers\AuthController@register');
 
 });
 
@@ -34,6 +33,6 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'quotation'
 ], function ($router) {
-    Route::post('save', [ApiQuotationController::class,'saveQuotation']);
-    Route::get('all', [ApiQuotationController::class,'getAllQuotations']);
+    Route::post('save', 'App\Http\Controllers\ApiQuotationController@saveQuotation');
+    Route::get('all', 'App\Http\Controllers\ApiQuotationController@getAllQuotations');
 });
