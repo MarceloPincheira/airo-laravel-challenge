@@ -57,3 +57,10 @@ Also, reeplace in the environment API_EMAIL_CREDENTIAL and API_PASSWORD_CREDENTI
 ```
 {}
 ```
+
+# Next steps
+After discovering issues with the docker-compose, it is very important to resolve these issues to avoid losing code in the future. Additionally, it is important to implement some of the following features: 
+- [ ] Create Customer and Quotation model (not mixed).
+- [ ] Implement custom Request.
+- [ ] Add factories to improve testings and add more unit tests.
+- [ ] Add error handling
